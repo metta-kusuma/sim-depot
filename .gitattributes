@@ -1,7 +1,5 @@
-# Menyembunyikan folder aset pihak ketiga dari statistik bahasa
-assets/**/* linguist-vendored
-csssku/**/* linguist-vendored
-gambar/**/* linguist-vendored
-img/**/* linguist-vendored
-js/**/* linguist-vendored
-logs/**/* linguist-vendored
+# Anggap semua file sebagai aset/vendored terlebih dahulu
+* linguist-vendored
+
+# Hanya hitung file dengan ekstensi .php sebagai kode utama
+*.php linguist-documentation=false
