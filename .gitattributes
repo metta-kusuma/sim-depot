@@ -1,0 +1,3 @@
+# Mengabaikan library pihak ketiga dari statistik bahasa GitHub
+assets/**/* linguist-vendored
+vendor/**/* linguist-vendored
