@@ -1,5 +1,7 @@
-# Anggap semua file sebagai aset/vendored terlebih dahulu
-* linguist-vendored
+# Abaikan semua file JavaScript dan CSS di seluruh folder dari statistik
+*.js linguist-vendored
+*.css linguist-vendored
+*.scss linguist-vendored
 
-# Hanya hitung file dengan ekstensi .php sebagai kode utama
-*.php linguist-documentation=false
+# Paksa GitHub untuk mendeteksi semua file PHP di folder mana pun sebagai kode utama
+**/*.php linguist-detectable=true
