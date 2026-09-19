@@ -1,3 +1,7 @@
-# Mengabaikan library pihak ketiga dari statistik bahasa GitHub
+# Menyembunyikan folder aset pihak ketiga dari statistik bahasa
 assets/**/* linguist-vendored
-vendor/**/* linguist-vendored
+csssku/**/* linguist-vendored
+gambar/**/* linguist-vendored
+img/**/* linguist-vendored
+js/**/* linguist-vendored
+logs/**/* linguist-vendored
