@@ -1,0 +1,252 @@
+<?php
+error_reporting(E_ALL ^E_NOTICE ^E_DEPRECATED); 
+ini_set('display_errors',0); 
+
+session_start();
+ 
+include "../config/koneksi.php";
+$conn = mysqli_connect($servername, $username, $password, $database);
+ 
+$menu=$_GET[menu];
+$act=$_GET[act];
+
+
+if ($menu=='admin' AND $act=='input'){
+   mysqli_query($conn,"INSERT INTO user(user_login,
+                                password,
+                                nama,
+								level) 
+	                       VALUES('$_POST[user_login]',
+                                '$_POST[password]',
+                                '$_POST[nama]',
+								'$_POST[level]')");
+  header('location:index.php?menu='.$menu);
+}
+
+// Update admin
+elseif ($menu=='admin' AND $act=='update'){
+   
+    mysqli_query($conn,"UPDATE user SET user_login='$_POST[user_login1]',
+                                 nama	    ='$_POST[nama]',
+								 level		='$_POST[level]'
+                            WHERE user_login='$_POST[user_login]'");
+   
+  header('location:index.php?menu='.$menu);
+}
+
+
+// HAPUS admin
+  elseif ($menu=='admin' AND $act=='batal'){
+  mysqli_query($conn,"DELETE FROM user WHERE user_login='$_GET[user_login]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+
+ 
+
+
+// INPUT kategori kategori
+  elseif ($menu=='kategori' AND $act=='input'){
+  mysqli_query($conn,"INSERT INTO kategori(id_kategori,nm_kategori) 
+	                      VALUES ('$_POST[id_kategori]',
+							      '$_POST[nm_kategori]')");
+  header('location:index.php?menu='.$menu);
+}
+// UPDATE kategori
+  elseif ($menu=='kategori' AND $act=='update'){
+  mysqli_query($conn,"UPDATE kategori      SET nm_kategori     ='$_POST[nm_kategori]'
+                               WHERE id_kategori    ='$_POST[id_kategori]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+
+// HAPUS kategori
+  elseif ($menu=='kategori' AND $act=='batal'){
+  mysqli_query($conn,"DELETE FROM kategori WHERE id_kategori='$_GET[id_kategori]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+
+  // INPUT BARANG
+  elseif ($menu=='menu' AND $act=='input')
+  {
+  
+    $lokasi_file=$_FILES['fupload']['tmp_name'];
+	$nama_file=$_FILES['fupload']['name'];
+	$acak=rand(000000,999999);
+	$nama_file_unik=$acak.$nama_file;
+
+	if (!empty($lokasi_file))
+	{
+		 
+   echo "dfd";
+   exit;
+	move_uploaded_file($lokasi_file,"../foto_produk/$nama_file_unik");
+  mysqli_query($conn,"INSERT INTO produk(id_kategori,nm_produk,harga,deskripsi,gmbr,stock) 
+	                      VALUES ('$_POST[id_kategori]',
+								  '$_POST[nm_produk]',
+ 								  '$_POST[harga]',
+								  '$_POST[deskripsi]',
+								  '$nama_file_unik',
+								  '$_POST[stock]')");
+	}
+	else
+	{
+     
+	  mysqli_query($conn,"INSERT INTO produk(id_kategori,nm_produk,harga,deskripsi,gmbr,stock) 
+	                      VALUES ('$_POST[id_kategori]',
+								  '$_POST[nm_produk]',
+ 								  '$_POST[harga]',
+								  '$_POST[deskripsi]',
+								  '$gambar',
+								  '$_POST[stock]')");
+	}
+  header('location:index.php?menu='.$menu);
+}
+
+elseif ($menu=='menu' AND $act=='rubah')
+  {
+
+    $lokasi_file=$_FILES['fupload']['tmp_name'];
+	$nama_file=$_FILES['fupload']['name'];
+	$acak=rand(000000,999999);
+	$nama_file_unik=$acak.$nama_file;
+
+ 
+ 	if (!empty($lokasi_file))
+	{
+	  move_uploaded_file($lokasi_file,"../foto_produk/$nama_file_unik");
+	  mysqli_query($conn,"update produk set nm_produk='$_POST[nm_produk]',
+									 id_kategori     ='$_POST[id_kategori]',
+ 									 harga	         ='$_POST[harga]',
+									      deskripsi  ='$_POST[deskripsi]',
+									      gmbr       ='$nama_file_unik',
+										  stock      ='$_POST[stock]'
+ 								      where id_produk='$_POST[id_produk]'");
+	  header('location:index.php?menu='.$menu);
+	}
+	else
+	  {
+		   mysqli_query($conn,"update produk set nm_produk='$_POST[nm_produk]',
+									 id_kategori     ='$_POST[id_kategori]',
+ 									 harga	         ='$_POST[harga]',
+									      deskripsi  ='$_POST[deskripsi]',
+										  stock='$_POST[stock]'
+  								      where id_produk='$_POST[id_produk]'");
+ 							
+	  header('location:index.php?menu='.$menu);
+
+	  }
+  }
+
+
+// HAPUS barang
+  elseif ($menu=='menu' AND $act=='batal'){
+  mysqli_query($conn,"delete FROM produk WHERE id_produk='$_GET[id_produk]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+
+// UPDATE MEMBER
+  elseif ($menu=='member' AND $act=='update'){
+  mysqli_query($conn,"UPDATE member    SET user_login  ='$_POST[user_login1]',
+								   password     ='$_POST[password]'
+                               WHERE user_login ='$_POST[user_login]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+
+// HAPUS MEMBER
+  elseif ($menu=='member' AND $act=='batal'){
+  mysqli_query($conn,"DELETE FROM pelanggan WHERE id_kons='$_GET[id_kons]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+  // UPDATE PEMBAYARAN
+  elseif ($menu=='pembayaran' AND $act=='update')
+  {
+	 $status=2;
+  mysqli_query($conn,"update faktur_pesan set status='$status' where no_order like '$_GET[kd_pesan]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+   // UPDATE PENGIRIMAN
+  elseif ($menu=='pengiriman' AND $act=='update')
+  {
+	 $status=3;
+  mysqli_query($conn,"update faktur_pesan set status='$status' where no_order like '$_GET[kd_pesan]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+// INPUT kategori KOTA
+  elseif ($menu=='kota' AND $act=='input'){
+  mysqli_query($conn,"INSERT INTO kota(kd_kota,nm_kota,biaya) 
+	                      VALUES ('$_POST[kd_kota]',
+							      '$_POST[nm_kota]',
+								  '$_POST[biaya]')");
+  header('location:index.php?menu='.$menu);
+}
+// UPDATE KOTA
+  elseif ($menu=='kota' AND $act=='update'){
+  mysqli_query($conn,"UPDATE kota     SET nm_kota      ='$_POST[nm_kota]',
+								   biaya        ='$_POST[biaya]'
+                               WHERE kd_kota    ='$_POST[kd_kota]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+
+// HAPUS kategori
+  elseif ($menu=='kota' AND $act=='batal'){
+  mysqli_query($conn,"DELETE FROM kota WHERE kd_kota='$_GET[kd_kota]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+
+ 
+  elseif ($menu=='ongkir' AND $act=='input'){
+  mysqli_query($conn,"INSERT INTO ongkir(nm_kota,biaya) 
+	                      VALUES ('$_POST[nm_kota]',
+							      '$_POST[biaya]')");
+  header('location:index.php?menu='.$menu);
+}
+ 
+  elseif ($menu=='ongkir' AND $act=='update'){
+  mysqli_query($conn,"UPDATE ongkir SET nm_kota ='$_POST[nm_kota]',
+								   biaya        ='$_POST[biaya]'
+                               WHERE id_area    ='$_POST[id_area]'");
+  header('location:index.php?menu='.$menu);
+  }
+ 
+elseif ($menu=='ongkir' AND $act=='batal'){
+  mysqli_query($conn,"DELETE FROM ongkir WHERE id_area='$_GET[id_area]'");
+  header('location:index.php?menu='.$menu);
+  }
+ 
+
+// INPUT kategori kategori
+  elseif ($menu=='info' AND $act=='input'){
+
+	  $tanggal=date('Y-m-d');
+  mysqli_query($conn,"INSERT INTO info(judul,isi,tanggal) 
+	                      VALUES ('$_POST[judul]',
+							      '$_POST[isi]',
+								  '$tanggal')");
+  header('location:index.php?menu='.$menu);
+}
+// UPDATE kategori
+  elseif ($menu=='info' AND $act=='update'){
+  mysqli_query($conn,"UPDATE info SET judul         ='$_POST[judul]',
+                                      isi           ='$_POST[isi]'
+                                    WHERE id_info    ='$_POST[id_info]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+
+// HAPUS kategori
+  elseif ($menu=='info' AND $act=='batal'){
+  mysqli_query($conn,"DELETE FROM info WHERE id_info='$_GET[id_info]'");
+  header('location:index.php?menu='.$menu);
+  }
+
+?>
+

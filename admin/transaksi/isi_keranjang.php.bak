@@ -1,0 +1,54 @@
+<?php
+   $kd_pesan   =$_GET[kd_pesan];
+  echo "kode :$kd_pesan";
+ echo "<br><br><center><span class=title2><b>KERANJANG BELANJA ANDA</b>
+    <a href=?menu=selesai&act=tambah>  
+	<font color=red><blink>Selesai Belanja</b></font></a> 
+ </center>
+  <table width=50% STYLE=BORDER-COLLAPSE:COLLAPSE; border=1 bgcolor=#333333>
+         <table class=table width=100%>
+          <tr class=th>	
+ <div id=atas> 
+ <td>No  <td>Kode  <td>Nama Barang     <td>Type    <td>Jumlah   <td>Harga   <td>Total <td>Aksi
+ ";
+ $no=0;
+				$tampil=mysql_query("select * from detail_pesan join barang join type 
+				on detail_pesan.kd_brg=barang.kd_brg
+				and barang.kd_type=type.kd_type
+				where kd_pesan='$kd_pesan'");
+				while($r=mysql_fetch_array($tampil))
+				{
+					$no=$no+1;
+
+					$harga=number_format($r[harga_jual]);
+					$kd_type=$r[kd_type];
+					$jum_harga=$r[harga_jual]*$r[jumlah];
+					$rjum_harga=number_format($jum_harga);
+					
+					$tot_harga=$tot_harga+$jum_harga;
+					$rtot_harga=number_format($tot_harga);
+
+
+				  echo "<tr class='td' bgcolor='#FFF'>
+						<td><span class=title3>$no
+						<td><span class=title3>$r[kd_brg]
+						<td><span class=title3>$r[nm_barang]
+						<td><span class=title3>$r[nm_type]
+						<td><center><span class=title3>$r[jumlah] $r[satuan]
+						<td dir=rtl><span class=title3>$harga
+						<td dir=rtl><span class=title3>$rjum_harga
+						<td><span class=title3>  <a href=\"./simpan.php?menu=keranjang&act=batal&id_pesan=$r[id_pesan]\"onClick=\"return confirm('Apakah (&nbsp;&nbsp;$r[nm_barang]&nbsp;&nbsp;) Di Hapus??')\"><img src=images/delete.png border=0>
+						
+						";
+
+				}
+
+				echo "<tr><td><td><td><Td><td><td><td><b>$rtot_harga</b>";
+
+
+
+				 
+				echo "</div></div></table>";
+
+
+ ?>

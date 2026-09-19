@@ -1,0 +1,108 @@
+<style>
+td
+{
+font-size:12px;
+border:1px #a9c6c9 solid;
+color:black;
+}
+
+th
+{
+font-size:12px;
+border:1px #a9c6c9 solid;
+color:black;
+}
+ 
+ input[type="text"], input[type="date"], input[type="number"],  input[type="password"], select, textarea {
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size:11px;
+	padding:5px;
+	 
+	height:30px;
+	border:1px solid #CCC;
+}
+ 
+</style>
+ 
+<!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-10">
+          <div class="col-sm-2">
+            <h1 class="m-0 text-dark">DATA ONGKIR </h1>
+          </div><!-- /.col -->
+          <div class="col-sm-10">
+            <ol class="breadcrumb float-sm-right">
+               </ol>       
+			 <div class='col-12'> 
+
+<?php
+ 
+ echo "<center>
+ 
+
+ <span class=title2><B>PEMESANAN BARANG</b></span>
+ </form><form action=?menu=pemesanan method=POST>
+ Kode Pesan<input type=text name=kd_pesan size=30 value=$_POST[kd_pesan]>
+ <input type=submit name=proses value=Cari>
+ <table width=100% STYLE=BORDER-COLLAPSE:COLLAPSE; border=0 bgcolor=#333333>
+         <table class=table width=100%>
+		 <tr class=th>	
+		 <td>NO
+		 <td>Kode Pesan
+		 <td>Tanggal
+		 <td>Alamat Pengiriman
+		 <td>Total Pesanan
+		 <td>Status 
+		 <td>Detail
+		  
+
+		 ";
+		 if (empty($_POST[kd_pesan]))
+		 {
+  	     $tampil=mysqli_query($conn,"select * from faktur_pesan where status=0 order by no_order desc");
+		 }
+		 else
+		 {
+		 $tampil=mysqli_query($conn,"select * from faktur_pesan where no_order like '%$_POST[kd_pesan]%' and status=0 order by no_order desc");
+		 
+		 }
+		 while($r=mysqli_fetch_array($tampil))
+		 {
+		$no=$no+1;
+		$total=number_format($r[total]);
+
+		if ($r[status]==0)
+		{
+			$ket="Belum Ada Pembayaran";
+		}
+		if ($r[status]==1)
+		{
+			$ket="Sudah Ada Pembayaran";
+		}
+		if ($r[status]==2)
+		{
+			$ket="Sudah Bayar";
+		}
+		if ($r[status]==3)
+		{
+			$ket="Sudah Dikirim";
+		}
+
+
+		echo "
+ 		 <tr class='td' bgcolor='#FFF'><td>$no
+		 <td>$r[no_order]
+		 <td>$r[tgl]
+		 <td>$r[al_pengiriman]
+		 <td dir=rtl>$total
+		 <td>$ket
+		 <td><a href=?menu=isi_detail&kd_pesan=$r[no_order]><center>Detail</a>  
+		 
+		 ";
+		}
+					 
+		echo " </table><br><br><br><br><br><br>";
+
+
+ ?>

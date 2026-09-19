@@ -1,0 +1,79 @@
+ 
+<?php
+$latar ="bgcolor=#333333";
+$huruf ="font size=1 face=ARIAL color=white";
+$huruf1="font size=1 face=ARIAL color=black";
+$huruf3="font size=1 face=ARIAL color=red";
+$huruf4="font size=2 face=ARIAL color=black";
+
+ 
+
+switch($_GET[act]){
+    default:
+    echo "<br><CENTER><b>DATA KOTA</b><br>
+	      
+		  
+           <input type=button value='Tambah' onclick=location.href='?menu=kota&act=tambah'>
+		  
+     <table width=50% STYLE=BORDER-COLLAPSE:COLLAPSE; border=0>
+         <table class=table width=50%>
+           
+		  <th bgcolor=#333333 height=30><$huruf>NO
+		  <th bgcolor=#333333><$huruf>KODE KOTA
+		  <th bgcolor=#333333><$huruf>NAMA KOTA
+		   <th bgcolor=#333333><$huruf>BIAYA RP.
+
+		  
+		  <th bgcolor=#333333><$huruf>AKSI</th></tr>";
+    
+    $tampil = mysql_query("SELECT * FROM kota ORDER BY kd_kota ASC  ");
+    while($r=mysql_fetch_array($tampil))
+		{
+		$no=$no+1;
+         echo "<tr class='td' bgcolor='#FFF'><td><$huruf1>$no</td>
+         <td><$huruf1>$r[kd_kota]
+		 <td><$huruf1>$r[nm_kota]
+		  <td><$huruf1>$r[biaya]
+		 
+		 
+         <td><$huruf1><a href=?menu=kota&act=edit&kd_kota=$r[kd_kota]><center>Edit</a> | 
+ 	     <$huruf1><a href=\"./data.php?menu=kota&act=batal&kd_kota=$r[kd_kota]\"onClick=\"return confirm('Apakah (&nbsp;&nbsp;$r[nm_kota]&nbsp;&nbsp;) Di Hapus??')\">Hapus		
+				</tr>";
+		 }
+    echo "</table><br><br><br><br>";
+    break;
+  
+  case "tambah":
+       echo "<br><br><center> &nbsp;<B>TAMBAH KOTA</B>
+          <form method=POST action='./data.php?menu=kota&act=input' enctype='multipart/form-data'>
+          <table width=50% STYLE=BORDER-COLLAPSE:COLLAPSE; border=0>
+         <table class=table width=50%>
+          <tr class='td' bgcolor='#FFF'><td><font size=2 face=ARIAL>Kode Kota        <td>  <input type=text name='kd_kota' size=4 required/> 
+          
+		  <tr class='td' bgcolor='#FFF'><td><font size=2 face=ARIAL>Nama Kota         <td>  <input type=text name='nm_kota' size=30 required/> 
+		   <tr class='td' bgcolor='#FFF'><td><font size=2 face=ARIAL>Biaya Rp.          <td>  <input type=text name='biaya' size=10 required/> 
+          <tr class='td' bgcolor='#FFF'><td><td colspan=2><input type=submit value=Simpan>
+          <input type=button value=Batal onclick=self.history.back()></td></tr>
+          </table><br><br><br><br><br><br></form>";
+          break;
+    
+  case "edit":
+           $edit = mysql_query("SELECT * FROM kota WHERE kd_kota='$_GET[kd_kota]'");
+           $r    = mysql_fetch_array($edit);
+       echo "<br><br><center><B>EDIT DATA KOTA</B>
+	       <form method=POST enctype='multipart/form-data' action=./data.php?menu=kota&act=update>
+          <input type=hidden name=kd_kota value=$r[kd_kota]>
+           <table width=50% STYLE=BORDER-COLLAPSE:COLLAPSE; border=0>
+         <table class=table width=50%>
+		<tr class='td' bgcolor='#FFF'><td><font size=2 face=ARIAL>Kode Kota        <td>  <input type=text name='kd_kota' size=4 value=$r[kd_kota] required/> 
+          
+		  <tr class='td' bgcolor='#FFF'><td><font size=2 face=ARIAL>Nama Kota         <td>  <input type=text name='nm_kota' size=30 value='$r[nm_kota]' required/> 
+		<tr class='td' bgcolor='#FFF'><td><font size=2 face=ARIAL>Biaya Rp.          <td>  <input type=text name='biaya' size=10 required/> 
+
+
+          <tr class='td' bgcolor='#FFF'><td><td colspan=2><input type=submit value=Update>
+          <input type=button value=Batal onclick=self.history.back()></td></tr>
+          </table></form><br><br><br><br>";
+          break;  
+}
+?>

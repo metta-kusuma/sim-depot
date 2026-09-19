@@ -1,0 +1,6 @@
+<?php
+echo "<br>
+Anda sukses login admin :
+<br>User Anda  :...?
+<br>Level Anda :....";
+?>

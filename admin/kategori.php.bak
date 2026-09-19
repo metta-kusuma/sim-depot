@@ -1,0 +1,6 @@
+<?php
+echo "<br> FORM INPUT KATEGORI 
+<table border=1>
+<tr><td>Kode Kategori  <td><input type=text name='kd_kategori' size=10 required>
+<tr><td>Nama Kategori  <td><input type=text name='nm_kategori' size=30 required>";
+?>

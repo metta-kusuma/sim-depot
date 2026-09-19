@@ -1,0 +1,38 @@
+<?php
+session_start();
+include "../config/koneksi.php";
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+$menu=$_GET['menu'];
+$act=$_GET['act'];
+
+if ($menu=='user' and $act=='simpan')
+{
+	$password=md5($_POST[password]);
+mysqli_query($conn,"insert into user(user_login,password,nama,level)
+values('$_POST[user_login]','$password','$_POST[nama]','$_POST[level]')");
+
+header('location:index.php?menu=user');
+}
+
+else if ($menu=='user' and $act=='edit')
+{
+	$password=md5($_POST[password]);
+	mysqli_query($conn,"update user set nama    ='$_POST[nama]',
+	                                    level   ='$_POST[level]',
+										password='$password'
+										where user_login='$_POST[user_login]'");
+ 
+header('location:index.php?menu=user');
+}
+
+else if ($menu=='user' and $act=='hapus')
+{
+	 
+	mysqli_query($conn,"delete from user where user_login='$_GET[user_login]'");
+ 
+header('location:index.php?menu=user');
+}
+
+
+?>

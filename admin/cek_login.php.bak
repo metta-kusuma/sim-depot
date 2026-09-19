@@ -1,0 +1,33 @@
+<?php
+ini_set('display_errors',0); 
+
+session_start();
+include "../config/koneksi.php";
+$conn = mysqli_connect($servername, $username, $password, $database);
+
+$password=$_POST[password];
+
+ 
+$sql=mysqli_query($conn,"select * from user where user_login='$_POST[user_login]' and password='$password'");
+$r=mysqli_fetch_array($sql);
+$nama=$r[nm_konsumen];
+ 
+if (!empty($nama)) 
+{
+	 
+
+	$_SESSION['user_login']=$r['user_login'];
+	$_SESSION['level']=$r['level'];
+	header('location:index.php');
+}
+else
+{
+		echo "<br><br><br><br><br><br>
+		      <center>
+			  Maaf User dan Password yang anda masukan salah.......
+			  <a href=index.php>Ulangi Lagi </a>";
+
+}
+
+
+?>

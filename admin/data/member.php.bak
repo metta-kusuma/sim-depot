@@ -1,0 +1,111 @@
+ <style>
+td
+{
+font-size:12px;
+border:1px #a9c6c9 solid;
+color:black;
+}
+
+th
+{
+font-size:12px;
+border:1px #a9c6c9 solid;
+color:black;
+}
+ 
+ input[type="text"], input[type="date"], input[type="number"],  input[type="password"], select, textarea {
+	font-family:Tahoma, Geneva, sans-serif;
+	font-size:11px;
+	padding:5px;
+	 
+	height:30px;
+	border:1px solid #CCC;
+}
+ 
+</style>
+ 
+<!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-10">
+          <div class="col-sm-2">
+            <h1 class="m-0 text-dark">DATA MEMBER </h1>
+          </div><!-- /.col -->
+          <div class="col-sm-10">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+              <li class="breadcrumb-item active"><a href='index.php?menu=ongkir&act=tambah'>Member</a></li>
+            </ol>       
+			 <div class='col-12'> 
+<?php
+  
+
+switch($_GET[act]){
+    default:
+    echo "<br> 
+	      </form><form action=?menu=member method=POST>
+
+		  <input type=text name=cari style='width: 200px; height: 24px' autocomplete='off' value='$_POST[cari]'>
+		  <input type=submit name=proses value=Cari>
+		  
+ 		  
+     <table width=95% STYLE=BORDER-COLLAPSE:COLLAPSE; border=0>
+         <table class=table width=95%>
+           
+		  <th height=30>NO
+		  <th>USER LOGIN
+		   <th>PASSWORD
+		  <th>NAMA MEMBER
+ 		  <th>ALAMAT
+ 		  <th>NO.TELP
+		   <th>AREA / KOTA
+ 		  <th><center>AKSI</th></tr>";
+    
+	if (empty($_POST[cari]))
+	{
+    $tampil = mysqli_query($conn,"SELECT * FROM pelanggan join ongkir on pelanggan.id_area=ongkir.id_area ORDER BY nm_konsumen");
+    }
+	else
+	{
+	$tampil = mysqli_query($conn,"SELECT * FROM pelanggan  join ongkir on pelanggan.id_area=ongkir.id_area where nm_konsumen like '%$_POST[cari]%' ORDER BY nm_konsumen");
+    
+	}
+	while($r=mysqli_fetch_array($tampil))
+		{
+		$no=$no+1;
+		 ;
+
+         echo "<tr class='td' bgcolor='#FFF'><td>$no</td>
+          
+		 <td>$r[user_login]
+		 <td>$r[password]
+		 <td>$r[nm_konsumen]
+		 <td>$r[alamat]
+ 		 <td>$r[no_telp]
+		  
+         <td><center>
+ 	     <a href=\"./data.php?menu=member&act=batal&id_kons=$r[id_kons]\"onClick=\"return confirm('Apakah (&nbsp;&nbsp;$r[user_login]&nbsp;&nbsp;) Di Hapus??')\">Hapus		
+				</tr>";
+		 }
+    echo "</table><br><br><br><br>";
+    break;
+  
+  
+  case "edit":
+           $edit = mysql_query("SELECT * FROM member WHERE user_login='$_GET[user_login]'");
+           $r    = mysql_fetch_array($edit);
+       echo "<br><br><center><B>EDIT DATA MEMBER</B>
+	       <form method=POST enctype='multipart/form-data' action=./data.php?menu=member&act=update>
+          <input type=hidden name=user_login value=$r[user_login]>
+           <table width=50% STYLE=BORDER-COLLAPSE:COLLAPSE; border=0>
+         <table class=table width=50%>
+		<tr class='td' bgcolor='#FFF'><td><font size=2 face=ARIAL>User Login <td><input type=text name='user_login1' size=15 value=$r[user_login] required/> 
+          
+		  <tr class='td' bgcolor='#FFF'><td><font size=2 face=ARIAL>Password<td><input type=text name='password' size=30 value='$r[password]' required/> 
+		    <tr class='td' bgcolor='#FFF'><td><font size=2 face=ARIAL>Nama<td><input type=text name='nama' size=30 value='$r[nama]' readonly=true> 
+          <tr class='td' bgcolor='#FFF'><td><td colspan=2><input type=submit value=Update>
+          <input type=button value=Batal onclick=self.history.back()></td></tr>
+          </table></form><br><br><br><br>";
+          break;  
+}
+?>
