@@ -9,7 +9,7 @@ include 'koneksi.php'; // SESUAIKAN PATH INI
 
 $verifyToken = 'ERROR';
 $accessToken = '';
-$phoneNumberId = '888054157724456';
+$phoneNumberId = '88.....4456';
 
 $config_wa = [];
 if (isset($conn) && $conn) {
