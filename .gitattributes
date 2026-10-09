@@ -1,0 +1,7 @@
+# Abaikan semua file JavaScript dan CSS di seluruh folder dari statistik
+*.js linguist-vendored
+*.css linguist-vendored
+*.scss linguist-vendored
+
+# Paksa GitHub untuk mendeteksi semua file PHP di folder mana pun sebagai kode utama
+**/*.php linguist-detectable=true
